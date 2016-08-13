@@ -1,0 +1,52 @@
+.play-pause-button {
+    -fx-text-fill: black;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    /*-fx-background-color: linear-gradient(#ffffff, #555555);*/
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 30px;
+    /*-fx-background-image: url("../images/playpausebutton_40_40.png");*/
+    -fx-padding: 10px;
+    -fx-border-insets: 10px;
+    -fx-background-insets: 10px;
+
+}
+
+.stop-button {
+    -fx-text-fill: black;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 30px;
+    /*-fx-background-image: url("../images/playpausebutton.jpg");*/
+    -fx-padding: 13px;
+    -fx-border-insets: 13px;
+    -fx-background-insets: 13px;
+
+}
+
+.prev-button {
+    -fx-text-fill: black;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 10px;
+    /*-fx-background-image: url("../images/playpausebutton.jpg");*/
+    -fx-padding: 18px;
+    -fx-border-insets: 18px;
+    -fx-background-insets: 18px;
+
+}
+
+.next-button {
+    -fx-text-fill: black;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-background-radius: 10px;
+    /*-fx-background-image: url("../images/playpausebutton.jpg");*/
+    -fx-padding: 18px;
+    -fx-border-insets: 18px;
+    -fx-background-insets: 18px;
+
+}
