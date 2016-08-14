@@ -19,6 +19,8 @@ public class GUIMusicPlayer {
     VBox playerPanel;
     HBox musicControlPanel;
 
+    private PlayerController playerController;
+
 
     public GUIMusicPlayer() {
         btnPlayPauseMusic = new Button();
@@ -43,6 +45,9 @@ public class GUIMusicPlayer {
 
         defineButtonStyles();
 
+        // Defining controller
+        playerController = new PlayerController();
+        playerController.loadMusic("audios/ringtone.mp3");
 
     }
 
@@ -87,20 +92,14 @@ public class GUIMusicPlayer {
     }
 
     private void PlayPauseMusicAction() {
-        if (btnStopMusic.isVisible()) {
-            btnStopMusic.setVisible(false);
-        }
-        else {
-            btnStopMusic.setVisible(true);
-        }
+        playerController.playButtonController();
     }
 
     private void StopMusicAction() {
-
+        playerController.stopButtonController();
     }
 
     private void PrevMusicAction() {
-
     }
 
     private void NextMusicAction() {
