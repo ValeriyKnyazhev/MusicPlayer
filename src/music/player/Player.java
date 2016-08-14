@@ -33,7 +33,7 @@ public class Player {
         media = new Media(fullPathname);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer = null;
+            mediaPlayer.stop();
         });
     }
 
