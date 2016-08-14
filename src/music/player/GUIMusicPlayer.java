@@ -44,6 +44,8 @@ public class GUIMusicPlayer {
     private static int curVolumeValue;
     private static PlayerStyle curPlayerStyle ;
 
+    private PlayerController playerController;
+
 
     public GUIMusicPlayer() {
         btnPlayPauseMusic = new Button();
@@ -73,10 +75,15 @@ public class GUIMusicPlayer {
         sliderVolume.setMax(Constants.MAX_VOLUME_VALUE);
         sliderVolume.setMin(Constants.MIN_VOLUME_VALUE);
 
+
         btnPlayPauseMusic.setOnAction(e-> ButtonClicked(e));
         btnStopMusic.setOnAction(e-> ButtonClicked(e));
         btnPrevMusic.setOnAction(e-> ButtonClicked(e));
         btnNextMusic.setOnAction(e-> ButtonClicked(e));
+
+        // Defining controller
+        playerController = new PlayerController();
+        playerController.loadMusic("audios/ringtone.mp3");
 
         playerPanel = new VBox();
         musicControlPanel = new VBox();
@@ -141,20 +148,14 @@ public class GUIMusicPlayer {
     }
 
     private void PlayPauseMusicAction() {
-        if (btnStopMusic.isVisible()) {
-            btnStopMusic.setVisible(false);
-        }
-        else {
-            btnStopMusic.setVisible(true);
-        }
+        playerController.playButtonController();
     }
 
     private void StopMusicAction() {
-
+        playerController.stopButtonController();
     }
 
     private void PrevMusicAction() {
-
     }
 
     private void NextMusicAction() {
