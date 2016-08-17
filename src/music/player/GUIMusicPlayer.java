@@ -1,5 +1,7 @@
 package music.player;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -41,7 +43,7 @@ public class GUIMusicPlayer {
     private static boolean isRandomMusic = false;
     private static boolean isReplayedMusic = false;
 
-    private static int curVolumeValue;
+    private static int curVolume;
     private static PlayerStyle curPlayerStyle ;
 
     private PlayerController playerController;
@@ -70,10 +72,10 @@ public class GUIMusicPlayer {
         sliderProgressTrack = new Slider();
         sliderVolume = new Slider();
 
-        curVolumeValue = 50;
-        sliderVolume.setValue(curVolumeValue);
-        sliderVolume.setMax(Constants.MAX_VOLUME_VALUE);
-        sliderVolume.setMin(Constants.MIN_VOLUME_VALUE);
+        curVolume = 50;
+        sliderVolume.setValue(curVolume);
+        sliderVolume.setMax(Constants.MAX_VOLUME);
+        sliderVolume.setMin(Constants.MIN_VOLUME);
 
 
         btnPlayPauseMusic.setOnAction(e-> ButtonClicked(e));
@@ -107,6 +109,14 @@ public class GUIMusicPlayer {
         scenePlayer = new Scene(playerPanel, Constants.WIDTH_WINDOW, Constants.HEIGHT_WINDOW);
 
         defineStyle(curPlayerStyle);
+
+        sliderVolume.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+                setVolume(new_val.intValue());
+            }
+        });
+
+
     }
 
     private void defineStyle(PlayerStyle playerStyle) {
@@ -160,5 +170,9 @@ public class GUIMusicPlayer {
 
     private void NextMusicAction() {
 
+    }
+
+    private void setVolume(int volume) {
+        playerController.setVolume(volume);
     }
 }

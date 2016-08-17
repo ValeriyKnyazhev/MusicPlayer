@@ -46,5 +46,7 @@ public class PlayerController {
         return status == MediaPlayer.Status.PLAYING;
     }
 
-
+    public void setVolume(int volume) {
+        player.setVolume(volume / 100.0);
+    }
 }

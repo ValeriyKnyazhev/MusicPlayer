@@ -78,4 +78,8 @@ public class Player {
         return status == MediaPlayer.Status.PAUSED || status == MediaPlayer.Status.READY
                 || status == MediaPlayer.Status.STOPPED;
     }
+
+    public void setVolume(double volume) {
+        mediaPlayer.setVolume(volume);
+    }
 }

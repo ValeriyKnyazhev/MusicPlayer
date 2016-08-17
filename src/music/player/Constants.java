@@ -19,8 +19,8 @@ public final class Constants {
 
 
     //  SETTINGS
-    public static final int MAX_VOLUME_VALUE = 100;
-    public static final int MIN_VOLUME_VALUE = 0;
+    public static final int MAX_VOLUME = 100;
+    public static final int MIN_VOLUME = 0;
     public static final int WIDTH_WINDOW = 300;
     public static final int HEIGHT_WINDOW = 500;
 
