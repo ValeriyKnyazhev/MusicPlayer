@@ -19,25 +19,52 @@ public class GUIMusicPlayer {
     private Button btnPrevMusic;
     private Button btnPlayPauseMusic;
     private Button btnStopMusic;
+
+    //to replay surrent music
     private Button btnReplayMusic;
+    //to play track in random order
     private Button btnRandomMusic;
+    //open the window with settings of the player
     private Button btnSettings;
 
+    //main scene of player
     private Scene scenePlayer;
 
     private Slider sliderVolume;
     private Slider sliderProgressTrack;
 
-    VBox playerPanel;
-        VBox musicControlPanel;
-            HBox musicControlMainPanel;
-            HBox musicControlAdditionalPanel;
-        HBox settingsPanel;
-        HBox fileNamePanel;
-        HBox progressTrackPanel;
-        BorderPane playlistPanel;
-            HBox namePlaylistPanel;
-            HBox currentPlaylistPanel;
+    //main panel of the player
+    //includes musicControlPanel, settingsPanel, fileNamePanel, progressTrackPanel, optionalPanel
+    private VBox playerPanel;
+
+    //panel for controlling tracks,
+    //includes musicControlMainPanel, musicControlAdditionalPanel
+    private VBox musicControlPanel;
+
+    //panel with btnNextMusic, btnPrevMusic, btnPlayPauseMusic, btnStopMusic
+    private HBox musicControlMainPanel;
+
+    //panel with btnReplayMusic, btnRandomMusic, sliderVolume
+    private HBox musicControlAdditionalPanel;
+
+    //panel with btnSettings
+    private HBox settingsPanel;
+
+    private HBox fileNamePanel;                                                                                         //
+
+    //panel with sliderProgressTrack
+    private HBox progressTrackPanel;
+
+    //panel for work with playlists
+    //includes namePlaylistPanel at Top, currentPlaylistPanel at Center
+    BorderPane playlistPanel;
+
+    //panel with names of the playlists
+    private HBox namePlaylistPanel;
+
+    //panel with scroll pane and list view                                                                              //
+    private HBox currentPlaylistPanel;
+
         HBox optionalPanel;
 
     private static boolean isRandomMusic = false;
@@ -58,34 +85,8 @@ public class GUIMusicPlayer {
         btnRandomMusic = new Button("random");
         btnSettings = new Button("settings");
 
-        btnPlayPauseMusic.setMinSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
-        btnPlayPauseMusic.setMaxSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
-        btnStopMusic.setMinSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
-        btnStopMusic.setMaxSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
-        btnPrevMusic.setMinSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
-        btnPrevMusic.setMaxSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
-        btnNextMusic.setMinSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
-        btnNextMusic.setMaxSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
-
-        curPlayerStyle = PlayerStyle.BaseStyle;
-
         sliderProgressTrack = new Slider();
         sliderVolume = new Slider();
-
-        curVolume = 50;
-        sliderVolume.setValue(curVolume);
-        sliderVolume.setMax(Constants.MAX_VOLUME);
-        sliderVolume.setMin(Constants.MIN_VOLUME);
-
-
-        btnPlayPauseMusic.setOnAction(e-> ButtonClicked(e));
-        btnStopMusic.setOnAction(e-> ButtonClicked(e));
-        btnPrevMusic.setOnAction(e-> ButtonClicked(e));
-        btnNextMusic.setOnAction(e-> ButtonClicked(e));
-
-        // Defining controller
-        playerController = new PlayerController();
-        playerController.loadMusic("audios/ringtone.mp3");
 
         playerPanel = new VBox();
         musicControlPanel = new VBox();
@@ -99,6 +100,21 @@ public class GUIMusicPlayer {
         currentPlaylistPanel = new HBox();
         optionalPanel = new HBox();
 
+        // Defining controller
+        playerController = new PlayerController();
+        playerController.loadMusic("audios/ringtone.mp3");
+
+        setControlSizes();
+
+        curPlayerStyle = checkStyle();
+
+        curVolume = 20;
+        setVolume(curVolume);
+
+        setControlValues();
+
+        defineActions();
+
         settingsPanel.getChildren().addAll(btnSettings);
         musicControlPanel.getChildren().addAll(musicControlMainPanel, musicControlAdditionalPanel);
         musicControlAdditionalPanel.getChildren().addAll(btnRandomMusic, btnReplayMusic, sliderVolume);
@@ -110,13 +126,10 @@ public class GUIMusicPlayer {
 
         defineStyle(curPlayerStyle);
 
-        sliderVolume.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-                setVolume(new_val.intValue());
-            }
-        });
+    }
 
-
+    private PlayerStyle checkStyle() {
+        return PlayerStyle.BaseStyle;
     }
 
     private void defineStyle(PlayerStyle playerStyle) {
@@ -135,7 +148,36 @@ public class GUIMusicPlayer {
         btnStopMusic.getStyleClass().add("stop-button");
         btnPrevMusic.getStyleClass().add("prev-button");
         btnNextMusic.getStyleClass().add("next-button");
+    }
 
+    private void setControlSizes() {
+        btnPlayPauseMusic.setMinSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
+        btnPlayPauseMusic.setMaxSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
+        btnStopMusic.setMinSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
+        btnStopMusic.setMaxSize(Constants.WIDTH_BUTTON1, Constants.HEIGHT_BUTTON);
+        btnPrevMusic.setMinSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
+        btnPrevMusic.setMaxSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
+        btnNextMusic.setMinSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
+        btnNextMusic.setMaxSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
+    }
+
+    private void setControlValues() {
+        sliderVolume.setValue(curVolume);
+        sliderVolume.setMax(Constants.MAX_VOLUME);
+        sliderVolume.setMin(Constants.MIN_VOLUME);
+    }
+
+    private void defineActions() {
+        btnPlayPauseMusic.setOnAction(e-> ButtonClicked(e));
+        btnStopMusic.setOnAction(e-> ButtonClicked(e));
+        btnPrevMusic.setOnAction(e-> ButtonClicked(e));
+        btnNextMusic.setOnAction(e-> ButtonClicked(e));
+
+        sliderVolume.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+                setVolume(new_val.intValue());
+            }
+        });
     }
 
     public final Scene getScenePlayer() {
