@@ -1,7 +1,10 @@
 package music.player;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.net.URI;
@@ -15,6 +18,7 @@ public class Player {
     private Playlist playlist;
 
     private double currentVolume;
+    private IPlayerController playerController;
 
     public Player() {
         mediaPlayer = null;
@@ -40,10 +44,15 @@ public class Player {
         media = new Media(fullPathname);
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(currentVolume);
+        mediaPlayer.getTotalDuration();
+        mediaPlayer.currentTimeProperty().addListener(ov -> {
+            playerController.updateSliderTrackProgress(mediaPlayer.getCurrentTime().toMillis() / mediaPlayer.getTotalDuration().toMillis());
+        });
         mediaPlayer.setOnEndOfMedia(() -> {
             loadNextTrack();
 //            mediaPlayer.stop();
         });
+
     }
 
     public void loadNextTrack() {
@@ -123,6 +132,22 @@ public class Player {
             mediaPlayer.setVolume(volume);
         }
         currentVolume = volume;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+
+    public void setPlayerController(IPlayerController playerController) {
+        this.playerController = playerController;
+    }
+
+    public void setTrackProgress(double trackProgress) {
+        if (mediaPlayer == null)
+        {
+            return;
+        }
+        mediaPlayer.seek(new Duration(trackProgress * mediaPlayer.getTotalDuration().toMillis()));
     }
 
 }

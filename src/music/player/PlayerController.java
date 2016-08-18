@@ -1,18 +1,29 @@
 package music.player;
 
+import javafx.scene.control.Slider;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 import java.io.File;
 
 /**
  * Created by akhtyamovpavel on 8/14/16.
  */
-public class PlayerController {
+public class PlayerController implements IPlayerController {
     private Player player;
     private PlaylistController playlistController;
+    private Slider progressTrackSlider;
+
+    private static boolean isMouseClickedOnTrackProgress = false;
+
 
     public PlayerController() {
         player = new Player();
+        initPlayerController();
+    }
+
+    public void initPlayerController() {
+        player.setPlayerController(this);
     }
 
     /**
@@ -89,4 +100,24 @@ public class PlayerController {
     public void prevButtonController() {
         player.loadPreviousTrack();
     }
+
+    @Override
+    public void updateSliderTrackProgress(double rate) {
+        if (!isMouseClickedOnTrackProgress) {
+            progressTrackSlider.setValue(rate);
+        }
+    }
+
+    public void setProgressTrackSlider(Slider progressTrackSlider) {
+        this.progressTrackSlider = progressTrackSlider;
+    }
+
+    public void setTrackProgress(double rate) {
+        player.setTrackProgress(rate);
+    }
+
+    public void setMouseClickedFlag(boolean isMouseClickedOnTrackProgress) {
+        this.isMouseClickedOnTrackProgress = isMouseClickedOnTrackProgress;
+    }
+
 }

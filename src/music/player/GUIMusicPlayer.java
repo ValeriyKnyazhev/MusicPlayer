@@ -3,9 +3,12 @@ package music.player;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -61,7 +64,7 @@ public class GUIMusicPlayer {
     BorderPane playlistPanel;
 
     //panel with names of the playlists
-    private HBox namePlaylistPanel;
+    private HBox namesPlaylistPanel;
 
     //panel with scroll pane and list view                                                                              //
     private HBox currentPlaylistPanel;
@@ -70,6 +73,8 @@ public class GUIMusicPlayer {
 
     private static boolean isRandomMusic = false;
     private static boolean isReplayedMusic = false;
+
+    private static boolean isMouseClickedOnTrackProgress = false;
 
     private Stage stagePlayer;
 
@@ -101,7 +106,7 @@ public class GUIMusicPlayer {
         fileNamePanel = new HBox();
         progressTrackPanel = new HBox();
         playlistPanel = new BorderPane();
-        namePlaylistPanel = new HBox();
+        namesPlaylistPanel = new HBox();
         currentPlaylistPanel = new HBox();
         optionalPanel = new HBox();
 
@@ -109,11 +114,12 @@ public class GUIMusicPlayer {
 
         playlistController = new PlaylistController();
 
+        this.stagePlayer = stagePlayer;
+
         // Defining controller
         playerController = new PlayerController();
         playerController.setPlaylistController(playlistController);
-
-        this.stagePlayer = stagePlayer;
+        playerController.setProgressTrackSlider(sliderProgressTrack);
 
         setControlSizes();
 
@@ -130,6 +136,7 @@ public class GUIMusicPlayer {
         musicControlPanel.getChildren().addAll(musicControlMainPanel, musicControlAdditionalPanel);
         musicControlAdditionalPanel.getChildren().addAll(btnRandomMusic, btnReplayMusic, sliderVolume);
         musicControlMainPanel.getChildren().addAll(btnPrevMusic, btnPlayPauseMusic, btnStopMusic, btnNextMusic);
+        progressTrackPanel.getChildren().addAll(sliderProgressTrack);
 
         playerPanel.getChildren().addAll(settingsPanel, fileNamePanel, musicControlPanel, progressTrackPanel, playlistPanel, optionalPanel);
 
@@ -170,12 +177,17 @@ public class GUIMusicPlayer {
         btnPrevMusic.setMaxSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
         btnNextMusic.setMinSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
         btnNextMusic.setMaxSize(Constants.WIDTH_BUTTON2, Constants.HEIGHT_BUTTON);
+        sliderProgressTrack.setMinSize(Constants.WIDTH_WINDOW, Constants.HEIGHT_SLIDER_TRACK_PROGRESS);
+        sliderProgressTrack.setPadding(new Insets(Constants.PADDING_SLIDER_TRACK_PROGRESS, Constants.PADDING_SLIDER_TRACK_PROGRESS,
+                Constants.PADDING_SLIDER_TRACK_PROGRESS, Constants.PADDING_SLIDER_TRACK_PROGRESS));
     }
 
     private void setControlValues() {
         sliderVolume.setValue(currentVolume);
         sliderVolume.setMax(Constants.MAX_VOLUME);
         sliderVolume.setMin(Constants.MIN_VOLUME);
+        sliderProgressTrack.setMax(Constants.MAX_PROGRESS_RATE);
+        sliderProgressTrack.setMin(Constants.MIN_PROGRESS_RATE);
     }
 
     private void defineActions() {
@@ -190,6 +202,29 @@ public class GUIMusicPlayer {
                 setVolume(new_val.intValue());
             }
         });
+
+        sliderProgressTrack.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                isMouseClickedOnTrackProgress = true;
+                setTrackProgress(sliderProgressTrack.getValue());
+                playerController.setMouseClickedFlag(isMouseClickedOnTrackProgress);
+            }
+        });
+
+        sliderProgressTrack.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                setTrackProgress(sliderProgressTrack.getValue());
+                isMouseClickedOnTrackProgress = false;
+                playerController.setMouseClickedFlag(isMouseClickedOnTrackProgress);
+            }
+        });
+
+    }
+
+    private void setTrackProgress(double rate) {
+        playerController.setTrackProgress(rate);
     }
 
     public final Scene getScenePlayer() {
@@ -232,6 +267,7 @@ public class GUIMusicPlayer {
 
     private void SettingsAction() {
         playlistController.loadFile(stagePlayer, 0);
+
     }
 
     private void setVolume(int volume) {

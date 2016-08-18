@@ -15,13 +15,16 @@ public final class Constants {
     public static final int PADDING_STOP_BUTTON = 15;  //  BaseStyle.css    stop-button
     public static final int PADDING_PREV_BUTTON = 18;  //  BaseStyle.css    prev-button
     public static final int PADDING_NEXT_BUTTON = 18;  //  BaseStyle.css    next-button
-
+    public static final int PADDING_SLIDER_TRACK_PROGRESS = 5;
+    public static final int HEIGHT_SLIDER_TRACK_PROGRESS = 10;
 
 
     //  SETTINGS
     public static final int MAX_VOLUME = 100;
     public static final int MIN_VOLUME = 0;
+    public static final double MAX_PROGRESS_RATE = 1.0;
+    public static final double MIN_PROGRESS_RATE = 0.0;
     public static final int WIDTH_WINDOW = 300;
-    public static final int HEIGHT_WINDOW = 500;
 
+    public static final int HEIGHT_WINDOW = 500;
 }
