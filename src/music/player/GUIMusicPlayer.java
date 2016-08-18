@@ -9,6 +9,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * Created by valeriy on 13.08.16.
@@ -65,18 +66,22 @@ public class GUIMusicPlayer {
     //panel with scroll pane and list view                                                                              //
     private HBox currentPlaylistPanel;
 
-        HBox optionalPanel;
+    private HBox optionalPanel;
 
     private static boolean isRandomMusic = false;
     private static boolean isReplayedMusic = false;
 
-    private static int curVolume;
-    private static PlayerStyle curPlayerStyle ;
+    private Stage stagePlayer;
+
+    private static int currentVolume;
+    private static PlayerStyle currentPlayerStyle ;
 
     private PlayerController playerController;
 
+    private PlaylistController playlistController;
 
-    public GUIMusicPlayer() {
+
+    public GUIMusicPlayer(Stage stagePlayer) {
         btnPlayPauseMusic = new Button();
         btnStopMusic = new Button();
         btnPrevMusic = new Button();
@@ -104,12 +109,16 @@ public class GUIMusicPlayer {
         playerController = new PlayerController();
         playerController.loadMusic("audios/ringtone.mp3");
 
+        playlistController = new PlaylistController();
+
+        this.stagePlayer = stagePlayer;
+
         setControlSizes();
 
-        curPlayerStyle = checkStyle();
+        currentPlayerStyle = checkStyle();
 
-        curVolume = 20;
-        setVolume(curVolume);
+        currentVolume = 50;
+        setVolume(currentVolume);
 
         setControlValues();
 
@@ -124,7 +133,7 @@ public class GUIMusicPlayer {
 
         scenePlayer = new Scene(playerPanel, Constants.WIDTH_WINDOW, Constants.HEIGHT_WINDOW);
 
-        defineStyle(curPlayerStyle);
+        defineStyle(currentPlayerStyle);
 
     }
 
@@ -162,7 +171,7 @@ public class GUIMusicPlayer {
     }
 
     private void setControlValues() {
-        sliderVolume.setValue(curVolume);
+        sliderVolume.setValue(currentVolume);
         sliderVolume.setMax(Constants.MAX_VOLUME);
         sliderVolume.setMin(Constants.MIN_VOLUME);
     }
@@ -211,10 +220,11 @@ public class GUIMusicPlayer {
     }
 
     private void NextMusicAction() {
-
+        playlistController.loadFile(stagePlayer, 0);
     }
 
     private void setVolume(int volume) {
         playerController.setVolume(volume);
     }
+
 }

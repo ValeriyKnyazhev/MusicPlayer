@@ -7,6 +7,7 @@ import javafx.scene.media.MediaPlayer;
  */
 public class PlayerController {
     private Player player;
+
     public PlayerController() {
         player = new Player();
     }

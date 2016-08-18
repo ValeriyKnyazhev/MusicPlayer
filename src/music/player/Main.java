@@ -15,7 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         stagePlayer = primaryStage;
-        guiMusicPlayer = new GUIMusicPlayer();
+        guiMusicPlayer = new GUIMusicPlayer(stagePlayer);
 
         scenePlayer = guiMusicPlayer.getScenePlayer();
 
