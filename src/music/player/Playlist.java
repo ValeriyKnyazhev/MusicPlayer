@@ -13,11 +13,40 @@ public class Playlist {
 
     Playlist() {
         trackPaths = new ArrayList<>();
-        currentTrackNumber = -1;
+        currentTrackNumber = 0;
     }
 
-    public final File getTrackPath(int trackNumber) {
+    public final File getTrack(int trackNumber) {
+        if (trackPaths.size() == 0) {
+            return null;
+        }
         return trackPaths.get(trackNumber);
+    }
+
+    public final File getNextTrack(boolean isRandom) {
+        if (trackPaths.size() == 0) {
+            return null;
+        }
+        if (isRandom) {
+            currentTrackNumber = 0;
+            return getTrack(0);
+        } else {
+            currentTrackNumber = (currentTrackNumber + 1) % trackPaths.size();
+            return getTrack(currentTrackNumber);
+        }
+    }
+
+    public final File getPreviousTrack(boolean isRandom) {
+        if (trackPaths.size() == 0) {
+            return null;
+        }
+        if (isRandom) {
+            currentTrackNumber = 0;
+            return getTrack(0);
+        } else {
+            currentTrackNumber = (currentTrackNumber + trackPaths.size() - 1) % trackPaths.size();
+            return getTrack(currentTrackNumber);
+        }
     }
 
     public final int getSize() {

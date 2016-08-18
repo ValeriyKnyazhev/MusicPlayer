@@ -12,10 +12,17 @@ import java.net.URI;
 public class Player {
     private MediaPlayer mediaPlayer;
     private Media media;
+    private Playlist playlist;
+
+    private double currentVolume;
 
     public Player() {
         mediaPlayer = null;
         media = null;
+    }
+
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
     }
 
     /**
@@ -32,9 +39,24 @@ public class Player {
         }
         media = new Media(fullPathname);
         mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(currentVolume);
         mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.stop();
+            loadNextTrack();
+//            mediaPlayer.stop();
         });
+    }
+
+    public void loadNextTrack() {
+        mediaPlayer.stop();
+        if (playlist == null) {
+            return;
+        }
+        File file = playlist.getNextTrack(false);
+        if (file == null) {
+            return;
+        }
+        loadMedia(file.toString(), true);
+        play();
     }
 
 
@@ -76,10 +98,13 @@ public class Player {
     private boolean isReadyToPlay_() {
         MediaPlayer.Status status = mediaPlayer.getStatus();
         return status == MediaPlayer.Status.PAUSED || status == MediaPlayer.Status.READY
-                || status == MediaPlayer.Status.STOPPED;
+                || status == MediaPlayer.Status.STOPPED || status == MediaPlayer.Status.UNKNOWN;
     }
 
     public void setVolume(double volume) {
-        mediaPlayer.setVolume(volume);
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(volume);
+        }
+        currentVolume = volume;
     }
 }

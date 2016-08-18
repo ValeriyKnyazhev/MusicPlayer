@@ -4,6 +4,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +14,10 @@ public class PlaylistController {
     private FileChooser fileChooser;
     private DirectoryChooser directoryChooser;
     private ArrayList<Playlist> playlists;
+
+
+    private int playlistNumber;
+    // TODO: make playlist number
 
     public PlaylistController() {
         fileChooser = new FileChooser();
@@ -27,14 +32,23 @@ public class PlaylistController {
 
     public void loadFile(Stage stage, int playlistNumber) {
         fileChooser.setTitle("Choose track");
-
-        playlists.get(playlistNumber).loadFile(fileChooser.showOpenDialog(stage));
+        File file = fileChooser.showOpenDialog(stage);
+        if (file == null) {
+            return;
+        }
+        playlists.get(playlistNumber).loadFile(file);
     }
 
     private void initPlaylists() {
         playlists = new ArrayList<>();
 
         playlists.add(new Playlist());
+
+        playlistNumber = 0;
+    }
+
+    public Playlist getPlaylist() {
+        return playlists.get(playlistNumber);
     }
 
 }

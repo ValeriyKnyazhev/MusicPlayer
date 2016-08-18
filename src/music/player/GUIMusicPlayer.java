@@ -105,11 +105,13 @@ public class GUIMusicPlayer {
         currentPlaylistPanel = new HBox();
         optionalPanel = new HBox();
 
-        // Defining controller
-        playerController = new PlayerController();
-        playerController.loadMusic("audios/ringtone.mp3");
+        this.stagePlayer = stagePlayer;
 
         playlistController = new PlaylistController();
+
+        // Defining controller
+        playerController = new PlayerController();
+        playerController.setPlaylistController(playlistController);
 
         this.stagePlayer = stagePlayer;
 
@@ -181,6 +183,7 @@ public class GUIMusicPlayer {
         btnStopMusic.setOnAction(e-> ButtonClicked(e));
         btnPrevMusic.setOnAction(e-> ButtonClicked(e));
         btnNextMusic.setOnAction(e-> ButtonClicked(e));
+        btnSettings.setOnAction(e-> ButtonClicked(e));
 
         sliderVolume.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
@@ -206,6 +209,9 @@ public class GUIMusicPlayer {
         else if (e.getSource() == btnNextMusic) {
             NextMusicAction();
         }
+        else if (e.getSource() == btnSettings) {
+            SettingsAction();
+        }
     }
 
     private void PlayPauseMusicAction() {
@@ -220,6 +226,10 @@ public class GUIMusicPlayer {
     }
 
     private void NextMusicAction() {
+        playerController.nextButtonController();
+    }
+
+    private void SettingsAction() {
         playlistController.loadFile(stagePlayer, 0);
     }
 
