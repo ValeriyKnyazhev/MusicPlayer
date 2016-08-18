@@ -47,6 +47,9 @@ public class Player {
     }
 
     public void loadNextTrack() {
+        if (mediaPlayer == null) {
+            return;
+        }
         mediaPlayer.stop();
         if (playlist == null) {
             return;
@@ -59,7 +62,21 @@ public class Player {
         play();
     }
 
-
+    public void loadPreviousTrack() {
+        if (mediaPlayer == null) {
+            return;
+        }
+        mediaPlayer.stop();
+        if (playlist == null) {
+            return;
+        }
+        File file = playlist.getPreviousTrack(false);
+        if (file == null) {
+            return;
+        }
+        loadMedia(file.toString(), true);
+        play();
+    }
 
     /**
      * Plays loaded track
@@ -107,4 +124,5 @@ public class Player {
         }
         currentVolume = volume;
     }
+
 }

@@ -223,6 +223,7 @@ public class GUIMusicPlayer {
     }
 
     private void PrevMusicAction() {
+        playerController.prevButtonController();
     }
 
     private void NextMusicAction() {

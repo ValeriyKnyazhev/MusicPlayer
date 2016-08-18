@@ -85,4 +85,8 @@ public class PlayerController {
     public void nextButtonController() {
         player.loadNextTrack();
     }
+
+    public void prevButtonController() {
+        player.loadPreviousTrack();
+    }
 }
