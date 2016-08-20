@@ -5,7 +5,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Created by valeriy on 18.08.16.
@@ -14,16 +16,23 @@ public class PlaylistController {
     private FileChooser fileChooser;
     private DirectoryChooser directoryChooser;
     private ArrayList<Playlist> playlists;
+    private ArrayList<String> nameOfPlaylists;
 
 
     private int playlistNumber;
-    // TODO: make playlist number
 
     public PlaylistController() {
         fileChooser = new FileChooser();
         directoryChooser = new DirectoryChooser();
 
+        setFileFilters();
+
         initPlaylists();
+    }
+
+    private void setFileFilters() {
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("WAV", "*.wav"),
+                new FileChooser.ExtensionFilter("MP3", "*.mp3"));
     }
 
     public void loadDirectory(Stage stage, int playlistNumber) {
@@ -32,6 +41,7 @@ public class PlaylistController {
         if (file == null) {
             return;
         }
+        System.out.println("Files will add to playlist" );
         playlists.get(playlistNumber).loadDirectory(file);
     }
 
@@ -46,14 +56,46 @@ public class PlaylistController {
 
     private void initPlaylists() {
         playlists = new ArrayList<>();
-
+//        loadPlaylistsFromConfig("config/playlists.txt");
+//        for (String name: nameOfPlaylists) {
+//            playlists.add(new Playlist());
+//        }
         playlists.add(new Playlist());
-
-        playlistNumber = 0;
     }
 
     public Playlist getPlaylist() {
         return playlists.get(playlistNumber);
+    }
+
+    public final int getPlaylistNumber() {
+        return playlistNumber;
+    }
+
+    public void loadPlaylistsFromConfig(String filePath) {
+        int numberPlaylists = 0;
+        nameOfPlaylists = new ArrayList<>();
+
+        try
+        {
+            Scanner scanner = new Scanner(new File(filePath));
+            if (scanner.hasNextInt()) {
+                numberPlaylists = scanner.nextInt();
+                if (numberPlaylists == 0) {
+                    return;
+                }
+            }
+
+            playlistNumber = scanner.nextInt();
+
+            int i = 0;
+            while(i++ < numberPlaylists) {
+                nameOfPlaylists.add(scanner.nextLine());
+            }
+        }
+        catch (FileNotFoundException e) {
+
+        }
+
     }
 
 }

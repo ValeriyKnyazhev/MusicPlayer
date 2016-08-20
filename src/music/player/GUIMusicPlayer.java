@@ -279,11 +279,11 @@ public class GUIMusicPlayer {
     }
 
     private void AddFileAction() {
-        playlistController.loadFile(stagePlayer, 0);
+        playlistController.loadFile(stagePlayer, playlistController.getPlaylistNumber());
     }
 
     private void AddDirectoryAction() {
-        playlistController.loadDirectory(stagePlayer, 0);
+        playlistController.loadDirectory(stagePlayer, playlistController.getPlaylistNumber());
     }
 
     private void SettingsAction() {

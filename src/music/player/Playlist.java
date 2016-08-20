@@ -61,8 +61,29 @@ public class Playlist {
 
     public void loadDirectory(File directory) {
         ArrayList<File> files = new ArrayList<File>(Arrays.asList(directory.listFiles()));
-        trackPaths.addAll(files);
-        System.out.println("size = " + trackPaths.size());
+        for (File file: files) {
+            switch (getFileExtension(file)) {
+                case "mp3":
+                case "wav": {
+                    trackPaths.add(file);
+                    System.out.println("added " + file.toString() + " from " + directory.toString());
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        System.out.println("new size = " + trackPaths.size());
+    }
+
+    private static String getFileExtension(File file) {
+        String fileName = file.getName();
+        // если в имени файла есть точка и она не является первым символом в названии файла
+        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
+            // то вырезаем все знаки после последней точки в названии файла, то есть ХХХХХ.txt -> txt
+            return fileName.substring(fileName.lastIndexOf(".")+1);
+            // в противном случае возвращаем заглушку, то есть расширение не найдено
+        else return "";
     }
 
 }
