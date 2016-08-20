@@ -27,7 +27,12 @@ public class PlaylistController {
     }
 
     public void loadDirectory(Stage stage, int playlistNumber) {
-
+        directoryChooser.setTitle("Choose directory of files");
+        File file = directoryChooser.showDialog(stage);
+        if (file == null) {
+            return;
+        }
+        playlists.get(playlistNumber).loadDirectory(file);
     }
 
     public void loadFile(Stage stage, int playlistNumber) {

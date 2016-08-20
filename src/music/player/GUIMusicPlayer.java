@@ -24,6 +24,9 @@ public class GUIMusicPlayer {
     private Button btnPlayPauseMusic;
     private Button btnStopMusic;
 
+    private Button btnAddFile;
+    private Button btnAddDirectory;
+
     //to replay surrent music
     private Button btnReplayMusic;
     //to play track in random order
@@ -94,6 +97,8 @@ public class GUIMusicPlayer {
         btnReplayMusic = new Button("replay");
         btnRandomMusic = new Button("random");
         btnSettings = new Button("settings");
+        btnAddFile = new Button("add file");
+        btnAddDirectory = new  Button("add dir");
 
         sliderProgressTrack = new Slider();
         sliderVolume = new Slider();
@@ -132,7 +137,7 @@ public class GUIMusicPlayer {
 
         defineActions();
 
-        settingsPanel.getChildren().addAll(btnSettings);
+        settingsPanel.getChildren().addAll(btnSettings, btnAddFile, btnAddDirectory);
         musicControlPanel.getChildren().addAll(musicControlMainPanel, musicControlAdditionalPanel);
         musicControlAdditionalPanel.getChildren().addAll(btnRandomMusic, btnReplayMusic, sliderVolume);
         musicControlMainPanel.getChildren().addAll(btnPrevMusic, btnPlayPauseMusic, btnStopMusic, btnNextMusic);
@@ -196,6 +201,8 @@ public class GUIMusicPlayer {
         btnPrevMusic.setOnAction(e-> ButtonClicked(e));
         btnNextMusic.setOnAction(e-> ButtonClicked(e));
         btnSettings.setOnAction(e-> ButtonClicked(e));
+        btnAddFile.setOnAction(e-> ButtonClicked(e));
+        btnAddDirectory.setOnAction(e-> ButtonClicked(e));
 
         sliderVolume.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
@@ -247,6 +254,12 @@ public class GUIMusicPlayer {
         else if (e.getSource() == btnSettings) {
             SettingsAction();
         }
+        else if (e.getSource() == btnAddDirectory) {
+            AddDirectoryAction();
+        }
+        else if (e.getSource() == btnAddFile) {
+            AddFileAction();
+        }
     }
 
     private void PlayPauseMusicAction() {
@@ -265,8 +278,15 @@ public class GUIMusicPlayer {
         playerController.nextButtonController();
     }
 
-    private void SettingsAction() {
+    private void AddFileAction() {
         playlistController.loadFile(stagePlayer, 0);
+    }
+
+    private void AddDirectoryAction() {
+        playlistController.loadDirectory(stagePlayer, 0);
+    }
+
+    private void SettingsAction() {
 
     }
 

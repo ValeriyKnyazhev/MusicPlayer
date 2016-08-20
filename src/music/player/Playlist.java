@@ -2,6 +2,7 @@ package music.player;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by valeriy on 18.08.16.
@@ -59,7 +60,9 @@ public class Playlist {
     }
 
     public void loadDirectory(File directory) {
-
+        ArrayList<File> files = new ArrayList<File>(Arrays.asList(directory.listFiles()));
+        trackPaths.addAll(files);
+        System.out.println("size = " + trackPaths.size());
     }
 
 }
