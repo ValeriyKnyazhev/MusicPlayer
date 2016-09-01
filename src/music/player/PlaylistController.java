@@ -4,10 +4,9 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Created by valeriy on 18.08.16.
@@ -56,11 +55,11 @@ public class PlaylistController {
 
     private void initPlaylists() {
         playlists = new ArrayList<>();
-//        loadPlaylistsFromConfig("config/playlists.txt");
-//        for (String name: nameOfPlaylists) {
-//            playlists.add(new Playlist());
-//        }
-        playlists.add(new Playlist());
+        loadPlaylistsFromConfig("res/config/playlists.txt");
+        for (String name: nameOfPlaylists) {
+            playlists.add(new Playlist());
+        }
+//        playlists.add(new Playlist());
     }
 
     public Playlist getPlaylist() {
@@ -75,25 +74,22 @@ public class PlaylistController {
         int numberPlaylists = 0;
         nameOfPlaylists = new ArrayList<>();
 
-        try
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), Charset.forName("UTF-8"))))
         {
-            Scanner scanner = new Scanner(new File(filePath));
-            if (scanner.hasNextInt()) {
-                numberPlaylists = scanner.nextInt();
-                if (numberPlaylists == 0) {
-                    return;
-                }
+            numberPlaylists = Integer.parseInt(reader.readLine());
+            if (numberPlaylists == 0) {
+                return;
             }
 
-            playlistNumber = scanner.nextInt();
+            playlistNumber = Integer.parseInt(reader.readLine());
 
             int i = 0;
-            while(i++ < numberPlaylists) {
-                nameOfPlaylists.add(scanner.nextLine());
+            while (i++ < numberPlaylists) {
+                nameOfPlaylists.add(reader.readLine());
             }
         }
-        catch (FileNotFoundException e) {
-
+        catch(Exception e) {
+            System.out.println(e);
         }
 
     }
